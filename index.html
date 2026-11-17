@@ -1,68 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>HD Background Remover - Free, No Watermark, HD Download | HD BG Remover</title>
-    
-    <meta name="description" content="Free HD Background Remover. Remove background from any photo in seconds. No Watermark, No Signup, 100% Private. Your photo never leaves your device. Download in HD.">
-    
-    <meta name="keywords" content="background remover, remove background, hd bg remover, free background remover, remove bg, photo background remover, no watermark">
-    
-    <meta property="og:title" content="HD BG Remover - Free HD Background Remover">
-    <meta property="og:description" content="Remove background from any photo in HD. Free, No Watermark, No Signup.">
-    <meta property="og:type" content="website">
-    
-    <style>
-      body{font-family:Arial,sans-serif;background:#eef4ff;margin:0;padding:20px;text-align:center}
-      .box{max-width:650px;margin:auto;background:#fff8ec;padding:25px;border-radius:15px}
-      .drop{border:2px dashed #3b82f6;border-radius:12px;padding:30px;cursor:pointer;background:#fff}
-      .btn{background:#6b8dbb;color:#fff;border:0;padding:15px;width:100%;border-radius:10px;font-size:16px;font-weight:bold;margin-top:15px;cursor:pointer}
-      input,textarea{width:100%;padding:13px;margin-top:10px;border:0;border-radius:8px;background:#4a5568;color:#fff;box-sizing:border-box}
-      input::placeholder,textarea::placeholder{color:#cbd5e0}
-      h1{color:#2563eb;margin-bottom:5px} h1 span{color:#1e293b}
-      .sub{color:#64748b;margin-top:0}
-      .footer{margin-top:20px;color:#64748b;font-size:13px}
-      .footer a{color:#2563eb;text-decoration:none;margin:0 5px}
-    </style>
-    </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD BG Remover - Free</title>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;font-family:Arial}body{margin:0;background:#0f172a;color:#fff;text-align:center;padding:20px}h1{font-size:28px}h1 span{color:#38bdf8}.box{background:#1e293b;border:2px dashed #38bdf8;border-radius:16px;padding:20px;max-width:600px;margin:20px auto;cursor:pointer}img,canvas{max-width:100%;border-radius:12px;margin-top:10px}button{background:#0284c7;color:#fff;border:none;padding:14px 20px;border-radius:10px;font-size:16px;font-weight:bold;width:100%;max-width:600px;cursor:pointer;margin-top:10px}button:disabled{opacity:.5}#status{color:#facc15;margin-top:10px}
+</style>
+</head>
 <body>
-
-<h1>HD <span>BG</span> Remover</h1>
-<p class="sub">Free • No Watermark • HD Download • Your Photo Never Leaves Your Device</p>
-
-<div class="box">
-  <div class="drop" onclick="document.getElementById('file').click()">
-    <div style="font-size:28px">📷</div>
-    <b>Drop Photo Here</b><br>
-    Or Click To Choose Photo<br>
-    <small>JPG, PNG, WEBP</small>
-    <input type="file" id="file" accept="image/*" hidden>
-  </div>
-  <button class="btn">Remove Background</button>
+<h1>HD BG <span>Remover</span></h1>
+<p>Free • No Watermark • HD Download</p>
+<div class="box" onclick="document.getElementById('file').click()">
+<p>📸 Drop Photo Here - Click Karo</p>
+<input type="file" id="file" accept="image/*" hidden>
+<img id="preview" style="display:none">
+<canvas id="out" style="display:none"></canvas>
 </div>
-
-<h2 style="margin-top:35px">📩 Contact Us</h2>
-<p style="color:#64748b">Having an issue? Photo not working? Send us a message, we will reply within 24 hours.</p>
-
-<div style="max-width:650px;margin:auto">
-  <form onsubmit="alert('Thank you! Your message has been sent.');return false;">
-    <input type="text" placeholder="Your Name" required>
-    <input type="email" placeholder="Your Email" required>
-    <textarea rows="4" placeholder="Your Message Here" required></textarea>
-    <button class="btn" style="background:#2563eb">Send Message</button>
-  </form>
-</div>
-
-<div class="footer">
-  <div style="margin-top:20px; color:#64748b; font-size:14px; text-align:center; padding-bottom:20px;">
-    <a href="index.html" style="color:#2563eb; text-decoration:none; margin:0 8px;">Home</a> | 
-    <a href="about.html" style="color:#2563eb; text-decoration:none; margin:0 8px;">About Us</a> | 
-    <a href="privacy.html" style="color:#2563eb; text-decoration:none; margin:0 8px;">Privacy Policy</a> | 
-    <a href="index.html" style="color:#2563eb; text-decoration:none; margin:0 8px;">Contact Us</a>
-    <br><br>
-    © 2026 HD BG Remover - Made with ❤️ in Pakistan
-  </div>
-  </body>
-  </html> 
+<p id="status">Photo select karo</p>
+<button id="btn" disabled>Remove Background</button>
+<button id="dl" style="display:none;background:#16a34a">Download HD Photo</button>
+<script>
+let imgEl=document.getElementById('preview'),fileInput=document.getElementById('file'),btn=document.getElementById('btn'),statusEl=document.getElementById('status');
+fileInput.onchange=e=>{
+let f=e.target.files[0];if(!f)return;
+let r=new FileReader();r.onload=ev=>{imgEl.src=ev.target.result;imgEl.style.display='block';btn.disabled=false;statusEl.textContent='Photo aa gayi! Ab Remove Background dabao';};r.readAsDataURL(f);
+};
+const seg=new SelfieSegmentation({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`});
+seg.setOptions({modelSelection:1});
+seg.onResults(res=>{
+let c=document.getElementById('out');let ctx=c.getContext('2d');
+c.width=res.image.width;c.height=res.image.height;
+ctx.drawImage(res.segmentationMask,0,0,c.width,c.height);
+ctx.globalCompositeOperation='source-in';ctx.drawImage(res.image,0,0,c.width,c.height);
+c.style.display='block';imgEl.style.display='none';
+statusEl.textContent='Ho gaya! Background hat gaya ✅';
+document.getElementById('dl').style.display='block';
+});
+btn.onclick=async()=>{statusEl.textContent='AI kaam kar raha hai... 2 second ruko...';btn.disabled=true;await seg.send({image:imgEl});btn.disabled=false;};
+document.getElementById('dl').onclick=()=>{
+let a=document.createElement('a');a.download='hd-no-bg.png';a.href=document.getElementById('out').toDataURL('image/png');a.click();
+};
+</script>
+</body>
+</html>
