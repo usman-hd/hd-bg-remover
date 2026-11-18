@@ -3,51 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD BG Remover - Free</title>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+<title>HD BG Remover - Remove Background in HD Free</title>
 <style>
-*{box-sizing:border-box;font-family:Arial}body{margin:0;background:#0f172a;color:#fff;text-align:center;padding:20px}h1{font-size:28px}h1 span{color:#38bdf8}.box{background:#1e293b;border:2px dashed #38bdf8;border-radius:16px;padding:20px;max-width:600px;margin:20px auto;cursor:pointer}img,canvas{max-width:100%;border-radius:12px;margin-top:10px}button{background:#0284c7;color:#fff;border:none;padding:14px 20px;border-radius:10px;font-size:16px;font-weight:bold;width:100%;max-width:600px;cursor:pointer;margin-top:10px}button:disabled{opacity:.5}#status{color:#facc15;margin-top:10px}
+body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:20px;margin:0}
+.box{max-width:650px;margin:auto;background:#1e293b;padding:25px;border-radius:20px}
+.upload{border:2px dashed #38bdf8;padding:30px;border-radius:15px;cursor:pointer;background:#0f172a}
+.upload img{max-width:100%;border-radius:10px;margin-top:15px;display:none}
+button{background:#4f46e5;color:white;border:none;padding:14px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:10px;width:90%}
+a{color:white;text-decoration:none}
+footer{margin-top:20px;font-size:14px}
+footer a{margin:0 8px}
+#status{margin:10px;color:#facc15}
+select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
 </style>
 </head>
 <body>
-<h1>HD BG <span>Remover</span></h1>
-<p>Free • No Watermark • HD Download</p>
-<div class="box" onclick="document.getElementById('file').click()">
-<p>📸 Drop Photo Here - Click Karo</p>
+<div class="box">
+<h1>✨ HD BG Remover</h1>
+<p>Remove Background From Any Photo in HD Quality - 100% Free</p>
+<div class="upload" onclick="document.getElementById('file').click()">
+<p>📸 Drop Photo Here - Click to Upload</p>
 <input type="file" id="file" accept="image/*" hidden>
-<img id="preview" style="display:none">
-<canvas id="out" style="display:none"></canvas>
+<img id="preview">
+<img id="result" style="display:none">
+<p id="status"></p>
 </div>
-<p id="status">Photo select karo</p>
-<button id="btn" disabled>Remove Background</button>
-<button id="dl" style="display:none;background:#16a34a">Download HD Photo</button>
-<script>
-let imgEl=document.getElementById('preview'),fileInput=document.getElementById('file'),btn=document.getElementById('btn'),statusEl=document.getElementById('status');
-fileInput.onchange=e=>{
-let f=e.target.files[0];if(!f)return;
-let r=new FileReader();r.onload=ev=>{imgEl.src=ev.target.result;imgEl.style.display='block';btn.disabled=false;statusEl.textContent='Photo aa gayi! Ab Remove Background dabao';};r.readAsDataURL(f);
-};
-const seg=new SelfieSegmentation({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`});
-seg.setOptions({modelSelection:1});
-seg.onResults(res=>{
-let c=document.getElementById('out');let ctx=c.getContext('2d');
-c.width=res.image.width;c.height=res.image.height;
-ctx.drawImage(res.segmentationMask,0,0,c.width,c.height);
-ctx.globalCompositeOperation='source-in';ctx.drawImage(res.image,0,0,c.width,c.height);
-c.style.display='block';imgEl.style.display='none';
-statusEl.textContent='Ho gaya! Background hat gaya ✅';
-document.getElementById('dl').style.display='block';
+<label>Choose Background:</label><br>
+<select id="bgSelect" onchange="changeBg()">
+<option value="transparent">Transparent (No Background)</option>
+<option value="white">White Background</option>
+<option value="blue">Blue Background</option>
+<option value="red">Red Background</option>
+<option value="green">Green Background</option>
+</select>
+<button id="removeBtn" onclick="removeBg()">Remove Background</button>
+<button id="downloadBtn" onclick="downloadImg()" style="display:none;background:#16a34a">Download HD Photo</button>
+</div>
+<footer>
+<a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
+<p>© 2026 HD BG Remover - Free Tool</p>
+</footer>
+<script type="module">
+import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+let selectedFile=null; let resultBlob=null;
+document.getElementById('file').addEventListener('change', e=>{
+  selectedFile=e.target.files[0];
+  if(!selectedFile) return;
+  let url=URL.createObjectURL(selectedFile);
+  let p=document.getElementById('preview');
+  p.src=url; p.style.display='block';
+  document.getElementById('result').style.display='none';
+  document.getElementById('downloadBtn').style.display='none';
+  document.getElementById('status').innerText='';
 });
-btn.onclick=async()=>{statusEl.textContent='AI kaam kar raha hai... 2 second ruko...';btn.disabled=true;await seg.send({image:imgEl});btn.disabled=false;};
-document.getElementById('dl').onclick=()=>{
-let a=document.createElement('a');a.download='hd-no-bg.png';a.href=document.getElementById('out').toDataURL('image/png');a.click();
+window.removeBg=async()=>{
+  if(!selectedFile){alert('Please select a photo first!');return;}
+  document.getElementById('status').innerText='Processing in HD... Please wait...';
+  try{
+    let blob=await removeBackground(selectedFile,{publicPath:'https://staticimgly.com/@imgly/background-removal-data/',output:{format:'image/png',quality:1}});
+    let img=new Image();
+    img.onload=()=>{
+      let canvas=document.createElement('canvas'); canvas.width=img.width; canvas.height=img.height;
+      let ctx=canvas.getContext('2d'); ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high'; ctx.drawImage(img,0,0);
+      canvas.toBlob((finalBlob)=>{
+        resultBlob=finalBlob; let url=URL.createObjectURL(finalBlob);
+        let r=document.getElementById('result'); r.src=url; r.style.display='block';
+        document.getElementById('downloadBtn').style.display='block';
+        document.getElementById('status').innerText='Done! Clean Edges Ready.';
+        changeBg();
+      },'image/png',1);
+    };
+    img.src=URL.createObjectURL(blob);
+  }catch(err){document.getElementById('status').innerText='Error! Please try with a clear photo.';}
+};
+window.changeBg=()=>{
+  let r=document.getElementById('result'); let val=document.getElementById('bgSelect').value;
+  if(val==='white') r.style.background='white';
+  else if(val==='blue') r.style.background='#2563eb';
+  else if(val==='red') r.style.background='#dc2626';
+  else if(val==='green') r.style.background='#16a34a';
+  else r.style.background='transparent';
+};
+window.downloadImg=()=>{
+  if(!resultBlob) return;
+  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover-clean.png'; a.click();
 };
 </script>
-  <footer style="text-align:center;padding:20px;color:white;margin-top:20px">
-<a href="about.html" style="color:white;margin:5px">About Us</a> | 
-<a href="contact.html" style="color:white;margin:5px">Contact Us</a> | 
-<a href="privacy.html" style="color:white;margin:5px">Privacy Policy</a>
-<p style="font-size:13px">© 2026 HD BG Remover - Free Tool</p>
-</footer>
 </body>
 </html>
