@@ -4,51 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HD BG Remover - Unlimited Free</title>
-<meta name="description" content="Free Unlimited HD BG Remover - Remove background from any photo unlimited free.">
+<meta name="description" content="Free Unlimited HD BG Remover - Remove background clean in HD. Mobile and Laptop Friendly.">
 <style>
-body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:20px;margin:0}
-.box{max-width:650px;margin:auto;background:#1e293b;padding:25px;border-radius:20px}
-.upload{border:2px dashed #38bdf8;padding:30px;border-radius:15px;cursor:pointer;background:#0f172a}
-.upload img{max-width:100%;border-radius:10px;margin-top:15px;display:none}
-button{background:#4f46e5;color:white;border:none;padding:14px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:10px;width:90%}
+*{box-sizing:border-box}
+body{font-family:Arial, sans-serif;background:#0f172a;color:white;text-align:center;padding:12px;margin:0}
+.box{max-width:650px;width:100%;margin:auto;background:#1e293b;padding:20px;border-radius:20px}
+h1{font-size:26px;margin:10px 0}
+p{font-size:15px;line-height:1.5;color:#cbd5e1}
+.upload{border:2px dashed #38bdf8;padding:20px;border-radius:15px;cursor:pointer;background:#0f172a;overflow:hidden}
+.upload img{max-width:100%;height:auto;border-radius:12px;margin-top:12px;display:none;background:transparent}
+button{background:#4f46e5;color:white;border:none;padding:15px 20px;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;margin:8px 0;width:100%}
+button:active{transform:scale(0.98)}
+#downloadBtn{background:#16a34a !important}
 a{color:white;text-decoration:none}
-footer{margin-top:20px;font-size:14px}
-footer a{margin:0 8px}
-#status{margin:10px;color:#facc15}
-select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
+footer{margin-top:18px;font-size:14px;line-height:1.8}
+footer a{margin:0 6px;display:inline-block}
+#status{margin:12px 0;color:#facc15;font-size:14px;min-height:20px}
+select{width:100%;padding:14px;border-radius:12px;margin:8px 0;font-size:16px;border:none;outline:none}
+label{font-weight:bold}
+/* Mobile ke liye */
+@media(max-width:500px){
+  body{padding:8px}
+  .box{padding:14px;border-radius:14px}
+  h1{font-size:22px}
+  button{font-size:16px}
+}
 </style>
 </head>
 <body>
 <div class="box">
-<h1>✨ HD BG Remover - UNLIMITED</h1>
-<p>Remove Background Unlimited - 100% Free - No Limit</p>
+<h1>✨ HD BG Remover</h1>
+<p>Remove Background Clean in HD - Unlimited Free<br>Mobile & Laptop Friendly</p>
+
 <div class="upload" onclick="document.getElementById('file').click()">
-<p>📸 Drop Photo Here - Click to Upload</p>
+<p style="font-size:28px;margin:5px">📸</p>
+<p><b>Click Here to Upload Photo</b><br><span style="font-size:13px">JPG / PNG - Any Size</span></p>
 <input type="file" id="file" accept="image/*" hidden>
 <img id="preview">
-<img id="result" style="display:none">
+<img id="result">
 <p id="status"></p>
 </div>
-<label>Choose Background:</label><br>
+
+<label>Choose Background:</label>
 <select id="bgSelect" onchange="changeBg()">
 <option value="transparent">Transparent (No Background)</option>
-<option value="white">White Background</option>
-<option value="blue">Blue Background</option>
+<option value="white">White Background - For Passport</option>
+<option value="blue">Blue Background - For ID Card</option>
 <option value="red">Red Background</option>
 <option value="green">Green Background</option>
 </select>
-<button id="removeBtn" onclick="removeBg()">Remove Background - Unlimited</button>
-<button id="downloadBtn" onclick="downloadImg()" style="display:none;background:#16a34a">Download HD Photo</button>
+
+<button id="removeBtn" onclick="removeBg()">Remove Background</button>
+<button id="downloadBtn" onclick="downloadImg()" style="display:none">⬇ Download HD Photo</button>
+<p style="font-size:12px;color:#94a3b8">Tip: Saaf photo use karo, peeche ki roshni achi ho to BG bilkul clean katega.</p>
 </div>
+
 <footer>
 <a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
 <p>© 2026 HD BG Remover - Unlimited Free Tool</p>
 </footer>
+
 <script type="module">
 import { removeBackground, preload } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
-// Pehle se model load karo taake baad me fail na ho
+// Pehle se model load - taake clean cut ho
 preload({publicPath:'https://staticimgly.com/@imgly/background-removal-data/'});
+
 let selectedFile=null; let resultBlob=null;
+
 document.getElementById('file').addEventListener('change', e=>{
   selectedFile=e.target.files[0];
   if(!selectedFile) return;
@@ -58,30 +80,56 @@ document.getElementById('file').addEventListener('change', e=>{
   document.getElementById('downloadBtn').style.display='none';
   document.getElementById('status').innerText='';
 });
+
 window.removeBg=async()=>{
   if(!selectedFile){alert('Please select a photo first!');return;}
-  document.getElementById('status').innerText='Processing Unlimited... Please wait 30 sec, do not refresh...';
+  document.getElementById('status').innerText='Processing in HD... Please wait 20-30 sec, do not refresh...';
+  document.getElementById('removeBtn').innerText='Processing... Please Wait...';
   try{
-    let blob=await removeBackground(selectedFile,{publicPath:'https://staticimgly.com/@imgly/background-removal-data/'});
-    resultBlob=blob;
-    let r=document.getElementById('result');
-    r.src=URL.createObjectURL(blob); r.style.display='block';
-    document.getElementById('downloadBtn').style.display='block';
-    document.getElementById('status').innerText='Done! Unlimited - Background Removed.';
-    changeBg();
-  }catch(err){document.getElementById('status').innerText='Net slow hai, 1 min wait karke dobara Try dabao, ho jayega. Ye Unlimited hai.';}
+    // HD + Clean Edges Setting
+    let blob=await removeBackground(selectedFile,{
+      publicPath:'https://staticimgly.com/@imgly/background-removal-data/',
+      output:{format:'image/png', quality:1}
+    });
+    // HD Canvas - Taake photo phate nahi
+    let img=new Image();
+    img.onload=()=>{
+      let canvas=document.createElement('canvas');
+      canvas.width=img.width; canvas.height=img.height;
+      let ctx=canvas.getContext('2d');
+      ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+      ctx.drawImage(img,0,0);
+      canvas.toBlob((finalBlob)=>{
+        resultBlob=finalBlob;
+        let r=document.getElementById('result');
+        r.src=URL.createObjectURL(finalBlob); r.style.display='block';
+        document.getElementById('downloadBtn').style.display='block';
+        document.getElementById('status').innerText='Done! Clean Background Removed ✅';
+        document.getElementById('removeBtn').innerText='Remove Background';
+        changeBg();
+        // Result tak scroll karo - mobile ke liye
+        r.scrollIntoView({behavior:'smooth'});
+      },'image/png',1);
+    };
+    img.src=URL.createObjectURL(blob);
+  }catch(err){
+    document.getElementById('status').innerText='Net slow hai, 1 min wait karke dobara Try karo.';
+    document.getElementById('removeBtn').innerText='Remove Background';
+  }
 };
+
 window.changeBg=()=>{
   let r=document.getElementById('result'); let val=document.getElementById('bgSelect').value;
   if(val==='white') r.style.background='white';
   else if(val==='blue') r.style.background='#2563eb';
   else if(val==='red') r.style.background='#dc2626';
   else if(val==='green') r.style.background='#16a34a';
-  else r.style.background='transparent';
+  else r.style.background='repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 20px 20px';
 };
+
 window.downloadImg=()=>{
   if(!resultBlob) return;
-  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover-unlimited.png'; a.click();
+  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover-clean.png'; a.click();
 };
 </script>
 </body>
