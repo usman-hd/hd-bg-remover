@@ -3,139 +3,804 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD BG Remover - Sharp Clean Cut</title>
-<meta name="description" content="Free HD BG Remover - Sharp Clean Cut No Blur - Mobile Laptop Friendly">
+
+<title>HD BG Remover - Professional AI Background Remover</title>
+
+<meta name="description" content="Remove image backgrounds online with AI. Create transparent PNG images, change backgrounds and download HD photos for free.">
+
+<meta name="keywords" content="AI background remover, remove image background, transparent PNG, HD background remover, free background remover">
+
+<meta name="theme-color" content="#0f172a">
+
 <style>
-*{box-sizing:border-box}
-body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:12px;margin:0}
-.box{max-width:650px;width:100%;margin:auto;background:#1e293b;padding:20px;border-radius:20px}
-h1{font-size:24px}
-p{font-size:15px;color:#cbd5e1;line-height:1.5}
-.upload{border:2px dashed #38bdf8;padding:20px;border-radius:15px;cursor:pointer;background:#0f172a}
-.upload img, .upload canvas{max-width:100%;height:auto;border-radius:12px;margin-top:12px;display:none;image-rendering:auto}
-button{background:#4f46e5;color:white;border:none;padding:15px;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer;margin:8px 0;width:100%}
-#downloadBtn{background:#16a34a !important}
-a{color:white;text-decoration:none}
-footer{margin-top:18px;font-size:14px;line-height:1.8}
-footer a{margin:0 6px}
-#status{margin:12px 0;color:#facc15;font-size:14px}
-select{width:100%;padding:14px;border-radius:12px;margin:8px 0;font-size:16px}
-@media(max-width:500px){.box{padding:14px} h1{font-size:22px}}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px 12px;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.header p {
+    color: #cbd5e1;
+    line-height: 1.6;
+}
+
+.card {
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    margin-bottom: 20px;
+}
+
+.upload-area {
+    border: 2px dashed #38bdf8;
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 35px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.upload-area:hover {
+    border-color: #818cf8;
+    background: #172554;
+}
+
+.upload-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.upload-area h3 {
+    margin: 8px 0;
+}
+
+.upload-area p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+input[type=file] {
+    display: none;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+    color: white;
+    background: #4f46e5;
+    transition: .2s;
+}
+
+button:hover:not(:disabled) {
+    opacity: .88;
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.primary-btn {
+    background: linear-gradient(90deg,#4f46e5,#2563eb);
+}
+
+.download-btn {
+    background: #16a34a;
+}
+
+.reset-btn {
+    background: #475569;
+}
+
+#status {
+    text-align: center;
+    color: #facc15;
+    font-size: 14px;
+    margin: 15px 0;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.progress-wrap {
+    height: 9px;
+    background: #334155;
+    border-radius: 20px;
+    overflow: hidden;
+    display: none;
+    margin: 12px 0;
+}
+
+#progressBar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#38bdf8,#6366f1);
+    transition: width .2s;
+}
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.preview-box {
+    min-width: 0;
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 12px;
+    border-radius: 14px;
+}
+
+.preview-box h3 {
+    font-size: 15px;
+    margin: 5px 0 12px;
+}
+
+.preview-box img,
+.preview-box canvas {
+    display: none;
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.checkerboard {
+    background-color: #e2e8f0;
+    background-image:
+    linear-gradient(45deg,#cbd5e1 25%,transparent 25%),
+    linear-gradient(-45deg,#cbd5e1 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#cbd5e1 75%),
+    linear-gradient(-45deg,transparent 75%,#cbd5e1 75%);
+    background-size: 20px 20px;
+    background-position: 0 0,0 10px,10px -10px,-10px 0px;
+}
+
+.section-title {
+    font-size: 18px;
+    margin: 22px 0 10px;
+}
+
+select,
+input[type=color] {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: white;
+    font-size: 15px;
+    margin-top: 8px;
+}
+
+input[type=color] {
+    height: 48px;
+    cursor: pointer;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.controls button {
+    margin-top: 10px;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+    text-align: center;
+}
+
+.feature {
+    background: #0f172a;
+    border: 1px solid #334155;
+    padding: 17px 8px;
+    border-radius: 12px;
+}
+
+.feature div {
+    font-size: 25px;
+}
+
+.feature p {
+    font-size: 12px;
+    color: #cbd5e1;
+    margin-bottom: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 5px;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 2;
+}
+
+footer a {
+    color: #38bdf8;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media(max-width:600px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .upload-area {
+        padding: 25px 10px;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="box">
-<h1>✨ HD BG Remover - SHARP</h1>
-<p>Clean Sharp Cut - No Blur - No Soft Edges<br>Mobile & Laptop Friendly</p>
-<div class="upload" onclick="document.getElementById('file').click()">
-<p style="font-size:28px;margin:5px">📸</p>
-<p><b>Click Here to Upload Photo</b></p>
-<input type="file" id="file" accept="image/*" hidden>
-<img id="preview">
-<canvas id="resultCanvas"></canvas>
-<p id="status"></p>
+
+<div class="container">
+
+<header class="header">
+    <div class="logo">✨</div>
+    <h1>HD BG Remover</h1>
+    <p>
+        Professional AI Background Remover<br>
+        Remove Backgrounds. Create Transparent HD Images.
+    </p>
+</header>
+
+<div class="card">
+
+    <label class="upload-area" for="file">
+        <div class="upload-icon">📸</div>
+        <h3>Upload Your Image</h3>
+        <p>Click here or select an image from your device</p>
+        <p>JPG, JPEG, PNG and WEBP supported</p>
+        <p style="font-size:13px;color:#facc15">Best Result Ke Liye 2MB - 5MB Ki HD Photo Upload Karo | Unlimited Free</p>
+        <input type="file" id="file" accept="image/jpeg,image/png,image/webp">
+    </label>
+
+    <div class="preview-grid">
+
+        <div class="preview-box">
+            <h3>Original Image</h3>
+            <img id="preview" alt="Original uploaded image">
+            <p id="originalPlaceholder" style="color:#64748b">
+                Your original photo appears here
+            </p>
+        </div>
+
+        <div class="preview-box checkerboard">
+            <h3 style="color:#0f172a">AI Result</h3>
+            <canvas id="resultCanvas"></canvas>
+            <p id="resultPlaceholder" style="color:#334155">
+                Your transparent result appears here
+            </p>
+        </div>
+
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+        <div id="progressBar"></div>
+    </div>
+
+    <p id="status">Upload a photo to get started.</p>
+
+    <button class="primary-btn" id="removeBtn">
+        ✨ Remove Background with AI
+    </button>
+
+    <h3 class="section-title">🎨 Choose New Background</h3>
+
+    <select id="bgSelect">
+        <option value="transparent">Transparent Background</option>
+        <option value="white">White - Passport Background</option>
+        <option value="blue">Blue Background</option>
+        <option value="red">Red Background</option>
+        <option value="green">Green Background</option>
+        <option value="black">Black Background</option>
+        <option value="custom">Custom Color</option>
+    </select>
+
+    <input type="color" id="customColor" value="#f59e0b"
+    style="display:none">
+
+    <div class="controls">
+        <button class="download-btn" id="downloadBtn" disabled>
+            ⬇ Download HD PNG
+        </button>
+
+        <button class="reset-btn" id="resetBtn">
+            ↻ Reset Image
+        </button>
+    </div>
+
+    <p style="font-size:12px;color:#94a3b8;text-align:center">
+        AI processing runs in your browser. Your uploaded photo
+        is not sent to a background-removal API server.
+    </p>
+
 </div>
-<label>Choose Background:</label>
-<select id="bgSelect" onchange="drawSharp()">
-<option value="transparent">Transparent (No Background)</option>
-<option value="white">White Background - Passport</option>
-<option value="blue">Blue Background - ID Card</option>
-<option value="red">Red Background</option>
-<option value="green">Green Background</option>
-</select>
-<button id="removeBtn" onclick="removeBg()">Remove Background - Sharp Cut</button>
-<button id="downloadBtn" onclick="downloadImg()" style="display:none">⬇ Download HD Sharp Photo</button>
-<p style="font-size:12px">Tip: HD photo dalo, blur wali photo ka cut bhi blur hoga.</p>
+
+<div class="card">
+
+    <h2>Why Use HD BG Remover?</h2>
+
+    <div class="features">
+
+        <div class="feature">
+            <div>🤖</div>
+            <b>AI Technology</b>
+            <p>Automatic subject detection</p>
+        </div>
+
+        <div class="feature">
+            <div>🖼️</div>
+            <b>HD PNG</b>
+            <p>Transparent image export</p>
+        </div>
+
+        <div class="feature">
+            <div>📱</div>
+            <b>Responsive</b>
+            <p>Mobile and desktop friendly</p>
+        </div>
+
+    </div>
+
 </div>
+
 <footer>
-<a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
-<p>© 2026 HD BG Remover - Sharp Cut</p>
+
+    <p>
+        <a href="index.html">Home</a> |
+        <a href="about.html">About Us</a> |
+        <a href="contact.html">Contact Us</a> |
+        <a href="privacy.html">Privacy Policy</a>
+    </p>
+
+    <p>© 2026 HD BG Remover. All Rights Reserved.</p>
+
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
-<script>
-let selectedFile=null; let originalImage=null; let sharpMask=null; let selfie=null;
+</div>
 
-document.getElementById('file').addEventListener('change', e=>{
-  selectedFile=e.target.files[0];
-  if(!selectedFile) return;
-  let p=document.getElementById('preview');
-  p.src=URL.createObjectURL(selectedFile); p.style.display='block';
-  document.getElementById('resultCanvas').style.display='none';
-  document.getElementById('downloadBtn').style.display='none';
-  document.getElementById('status').innerText='';
-  let img=new Image();
-  img.onload=()=>{originalImage=img;};
-  img.src=URL.createObjectURL(selectedFile);
+<script type="module">
+
+// ==================================
+// AI BACKGROUND REMOVAL ENGINE
+// ==================================
+
+const MODEL_VERSION = "1.7.0";
+
+const statusText = document.getElementById("status");
+const fileInput = document.getElementById("file");
+const preview = document.getElementById("preview");
+const canvas = document.getElementById("resultCanvas");
+const ctx = canvas.getContext("2d");
+
+const removeBtn = document.getElementById("removeBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const bgSelect = document.getElementById("bgSelect");
+const customColor = document.getElementById("customColor");
+
+const progressWrap = document.getElementById("progressWrap");
+const progressBar = document.getElementById("progressBar");
+
+let selectedFile = null;
+let resultBlob = null;
+let resultURL = null;
+let resultImage = null;
+let processing = false;
+let removeBackgroundFunction = null;
+
+// ==================================
+// IMAGE UPLOAD
+// ==================================
+
+fileInput.addEventListener("change", (event) => {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    if (!["image/jpeg","image/png","image/webp"].includes(file.type)) {
+        statusText.textContent = "Please select JPG, PNG or WEBP.";
+        return;
+    }
+
+    if (file.size > 15 * 1024 * 1024) {
+        statusText.textContent = "Maximum image size is 15 MB.";
+        return;
+    }
+
+    selectedFile = file;
+
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+
+    document.getElementById("originalPlaceholder").style.display = "none";
+    document.getElementById("resultPlaceholder").style.display = "block";
+
+    canvas.style.display = "none";
+
+    resultBlob = null;
+    resultImage = null;
+
+    if (resultURL) {
+        URL.revokeObjectURL(resultURL);
+        resultURL = null;
+    }
+
+    downloadBtn.disabled = true;
+    progressWrap.style.display = "none";
+    progressBar.style.width = "0%";
+
+    let mb = (file.size / 1024 / 1024).toFixed(2);
+    statusText.textContent = "Image uploaded: " + mb + " MB - Ready for AI. Best size 2-5 MB hai.";
+
 });
 
-function getSelfie(){
-  if(selfie) return selfie;
-  selfie=new SelfieSegmentation({locateFile:(f)=>`https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${f}`});
-  selfie.setOptions({modelSelection:1});
-  selfie.onResults(onResults);
-  return selfie;
+// ==================================
+// LOAD AI LIBRARY
+// ==================================
+
+async function loadAI() {
+
+    if (removeBackgroundFunction) {
+        return removeBackgroundFunction;
+    }
+
+    statusText.textContent = "Loading AI engine...";
+
+    const module = await import(
+        "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm"
+    );
+
+    removeBackgroundFunction = module.default;
+
+    return removeBackgroundFunction;
 }
 
-function onResults(results){
-  // 1. Mask ko Sharp karo - Blur khatam
-  let w=originalImage.width, h=originalImage.height;
-  let tmp=document.createElement('canvas'); tmp.width=w; tmp.height=h;
-  let tctx=tmp.getContext('2d');
-  tctx.drawImage(results.segmentationMask,0,0,w,h);
-  let imgData=tctx.getImageData(0,0,w,h);
-  let d=imgData.data;
-  // SHARP THRESHOLD: 100 se upar = poora insaan, neeche = poora khatam, beech ka blur khatam
-  for(let i=0;i<d.length;i+=4){
-    let v=d[i]; // mask white = insaan
-    if(v>100){ d[i+3]=255; } else { d[i+3]=0; }
-    d[i]=255; d[i+1]=255; d[i+2]=255;
-  }
-  tctx.putImageData(imgData,0,0);
-  sharpMask=tmp;
-  drawSharp();
-  document.getElementById('status').innerText='Done! Sharp Clean Cut - No Blur ✅';
-  document.getElementById('removeBtn').innerText='Remove Background - Sharp Cut';
+// ==================================
+// REMOVE BACKGROUND
+// ==================================
+
+removeBtn.addEventListener("click", async () => {
+
+    if (!selectedFile) {
+        statusText.textContent = "Please upload an image first.";
+        return;
+    }
+
+    if (processing) return;
+
+    processing = true;
+
+    removeBtn.disabled = true;
+    downloadBtn.disabled = true;
+
+    removeBtn.textContent = "Processing AI...";
+
+    progressWrap.style.display = "block";
+    progressBar.style.width = "0%";
+
+    try {
+
+        const removeBackground = await loadAI();
+
+        statusText.textContent =
+            "AI model is preparing. First use may take longer...";
+
+        const output = await removeBackground(
+            selectedFile,
+            {
+                publicPath:
+                    `https://staticimgly.com/@imgly/background-removal-data/${MODEL_VERSION}/dist/`,
+
+                model: "medium",
+
+                output: {
+                    format: "image/png",
+                    quality: 1,
+                    type: "foreground"
+                },
+
+                progress: (key, current, total) => {
+
+                    if (total > 0) {
+
+                        const percent = Math.round(
+                            current / total * 100
+                        );
+
+                        progressBar.style.width = percent + "%";
+
+                        statusText.textContent =
+                            "Downloading AI resources: " + percent + "%";
+                    }
+                }
+            }
+        );
+
+        resultBlob = output;
+
+        if (resultURL) {
+            URL.revokeObjectURL(resultURL);
+        }
+
+        resultURL = URL.createObjectURL(resultBlob);
+
+        resultImage = new Image();
+
+        resultImage.src = resultURL;
+
+        await resultImage.decode();
+
+        drawResult();
+
+        downloadBtn.disabled = false;
+
+        progressBar.style.width = "100%";
+
+        statusText.textContent =
+            "Success! AI Background Removed. 🎉";
+
+        document.getElementById("resultPlaceholder").style.display = "none";
+
+        canvas.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    } catch (error) {
+
+        console.error("AI Error:", error);
+
+        statusText.textContent =
+            "Unable to process image. Please refresh and try again. Check browser console for details.";
+
+        progressBar.style.width = "0%";
+
+    } finally {
+
+        processing = false;
+
+        removeBtn.disabled = false;
+
+        removeBtn.textContent =
+            "✨ Remove Background with AI";
+
+    }
+
+});
+
+// ==================================
+// DRAW RESULT WITH BACKGROUND
+// ==================================
+
+function drawResult() {
+
+    if (!resultImage) return;
+
+    canvas.width = resultImage.naturalWidth;
+    canvas.height = resultImage.naturalHeight;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const bg = bgSelect.value;
+
+    if (bg === "white") {
+        ctx.fillStyle = "#ffffff";
+    }
+
+    else if (bg === "blue") {
+        ctx.fillStyle = "#2563eb";
+    }
+
+    else if (bg === "red") {
+        ctx.fillStyle = "#dc2626";
+    }
+
+    else if (bg === "green") {
+        ctx.fillStyle = "#16a34a";
+    }
+
+    else if (bg === "black") {
+        ctx.fillStyle = "#000000";
+    }
+
+    else if (bg === "custom") {
+        ctx.fillStyle = customColor.value;
+    }
+
+    if (bg !== "transparent") {
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+
+    ctx.globalCompositeOperation = "source-over";
+
+    ctx.drawImage(
+        resultImage,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    canvas.style.display = "block";
 }
 
-function drawSharp(){
-  if(!sharpMask || !originalImage) return;
-  let canvas=document.getElementById('resultCanvas');
-  let ctx=canvas.getContext('2d');
-  canvas.width=originalImage.width; canvas.height=originalImage.height;
-  // Background
-  let bg=document.getElementById('bgSelect').value;
-  if(bg==='white'){ctx.fillStyle='white'; ctx.fillRect(0,0,canvas.width,canvas.height);}
-  else if(bg==='blue'){ctx.fillStyle='#2563eb'; ctx.fillRect(0,0,canvas.width,canvas.height);}
-  else if(bg==='red'){ctx.fillStyle='#dc2626'; ctx.fillRect(0,0,canvas.width,canvas.height);}
-  else if(bg==='green'){ctx.fillStyle='#16a34a'; ctx.fillRect(0,0,canvas.width,canvas.height);}
-  else {ctx.clearRect(0,0,canvas.width,canvas.height);}
-  // Sharp Mask lagao - koi blur nahi
-  ctx.imageSmoothingEnabled=false;
-  ctx.drawImage(sharpMask,0,0);
-  ctx.globalCompositeOperation='source-in';
-  // Original HD photo - bilkul saaf
-  ctx.drawImage(originalImage,0,0,canvas.width,canvas.height);
-  ctx.globalCompositeOperation='source-over';
-  canvas.style.display='block';
-  document.getElementById('downloadBtn').style.display='block';
-  canvas.scrollIntoView({behavior:'smooth'});
-}
+// ==================================
+// CHANGE BACKGROUND
+// ==================================
 
-async function removeBg(){
-  if(!selectedFile){alert('Please select a photo first!');return;}
-  document.getElementById('status').innerText='Processing Sharp Cut... 5 sec wait...';
-  document.getElementById('removeBtn').innerText='Processing...';
-  try{ await getSelfie().send({image: originalImage}); }
-  catch(e){ document.getElementById('status').innerText='Dobara Try dabao.'; document.getElementById('removeBtn').innerText='Remove Background - Sharp Cut'; }
-}
+bgSelect.addEventListener("change", () => {
 
-function downloadImg(){
-  let canvas=document.getElementById('resultCanvas');
-  let a=document.createElement('a');
-  a.href=canvas.toDataURL('image/png',1);
-  a.download='sharp-bg-remover.png'; a.click();
-}
+    customColor.style.display =
+        bgSelect.value === "custom" ? "block" : "none";
+
+    if (resultImage) {
+        drawResult();
+    }
+
+});
+
+customColor.addEventListener("input", () => {
+
+    if (resultImage && bgSelect.value === "custom") {
+        drawResult();
+    }
+
+});
+
+// ==================================
+// DOWNLOAD PNG
+// ==================================
+
+downloadBtn.addEventListener("click", () => {
+
+    if (!resultImage) return;
+
+    try {
+
+        const bg = bgSelect.value;
+
+        let downloadURL;
+
+        if (bg === "transparent") {
+
+            downloadURL = resultURL;
+
+        } else {
+
+            downloadURL = canvas.toDataURL("image/png");
+        }
+
+        const link = document.createElement("a");
+
+        link.href = downloadURL;
+
+        link.download = "HD-AI-Background-Removed.png";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        statusText.textContent = "Your PNG image is ready!";
+
+    } catch (error) {
+
+        console.error(error);
+
+        statusText.textContent =
+            "Download failed. Please try again.";
+
+    }
+
+});
+
+// ==================================
+// RESET
+// ==================================
+
+resetBtn.addEventListener("click", () => {
+
+    selectedFile = null;
+    resultBlob = null;
+    resultImage = null;
+
+    fileInput.value = "";
+
+    preview.removeAttribute("src");
+    preview.style.display = "none";
+
+    canvas.style.display = "none";
+
+    document.getElementById("originalPlaceholder").style.display = "block";
+    document.getElementById("resultPlaceholder").style.display = "block";
+
+    if (resultURL) {
+        URL.revokeObjectURL(resultURL);
+        resultURL = null;
+    }
+
+    downloadBtn.disabled = true;
+
+    progressWrap.style.display = "none";
+    progressBar.style.width = "0%";
+
+    bgSelect.value = "transparent";
+    customColor.style.display = "none";
+
+    statusText.textContent = "Upload a new image to get started.";
+
+});
+
 </script>
+
 </body>
 </html>
