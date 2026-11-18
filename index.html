@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD BG Remover - Remove Background in HD Free</title>
+<title>HD BG Remover - Unlimited Free</title>
+<meta name="description" content="Free Unlimited HD BG Remover - Remove background from any photo unlimited free.">
 <style>
 body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:20px;margin:0}
 .box{max-width:650px;margin:auto;background:#1e293b;padding:25px;border-radius:20px}
@@ -19,8 +20,8 @@ select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
 </head>
 <body>
 <div class="box">
-<h1>✨ HD BG Remover</h1>
-<p>Remove Background From Any Photo in HD Quality - 100% Free</p>
+<h1>✨ HD BG Remover - UNLIMITED</h1>
+<p>Remove Background Unlimited - 100% Free - No Limit</p>
 <div class="upload" onclick="document.getElementById('file').click()">
 <p>📸 Drop Photo Here - Click to Upload</p>
 <input type="file" id="file" accept="image/*" hidden>
@@ -36,45 +37,39 @@ select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
 <option value="red">Red Background</option>
 <option value="green">Green Background</option>
 </select>
-<button id="removeBtn" onclick="removeBg()">Remove Background</button>
+<button id="removeBtn" onclick="removeBg()">Remove Background - Unlimited</button>
 <button id="downloadBtn" onclick="downloadImg()" style="display:none;background:#16a34a">Download HD Photo</button>
 </div>
 <footer>
 <a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
-<p>© 2026 HD BG Remover - Free Tool</p>
+<p>© 2026 HD BG Remover - Unlimited Free Tool</p>
 </footer>
 <script type="module">
-import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+import { removeBackground, preload } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+// Pehle se model load karo taake baad me fail na ho
+preload({publicPath:'https://staticimgly.com/@imgly/background-removal-data/'});
 let selectedFile=null; let resultBlob=null;
 document.getElementById('file').addEventListener('change', e=>{
   selectedFile=e.target.files[0];
   if(!selectedFile) return;
-  let url=URL.createObjectURL(selectedFile);
   let p=document.getElementById('preview');
-  p.src=url; p.style.display='block';
+  p.src=URL.createObjectURL(selectedFile); p.style.display='block';
   document.getElementById('result').style.display='none';
   document.getElementById('downloadBtn').style.display='none';
   document.getElementById('status').innerText='';
 });
 window.removeBg=async()=>{
   if(!selectedFile){alert('Please select a photo first!');return;}
-  document.getElementById('status').innerText='Processing... Please wait 20 sec, do not refresh...';
-  document.getElementById('removeBtn').innerText='Processing...';
+  document.getElementById('status').innerText='Processing Unlimited... Please wait 30 sec, do not refresh...';
   try{
-    // SIMPLE - No extra publicPath, isliye error nahi aayega
-    let blob=await removeBackground(selectedFile);
+    let blob=await removeBackground(selectedFile,{publicPath:'https://staticimgly.com/@imgly/background-removal-data/'});
     resultBlob=blob;
-    let url=URL.createObjectURL(blob);
     let r=document.getElementById('result');
-    r.src=url; r.style.display='block';
+    r.src=URL.createObjectURL(blob); r.style.display='block';
     document.getElementById('downloadBtn').style.display='block';
-    document.getElementById('status').innerText='Done! Background Removed Successfully.';
-    document.getElementById('removeBtn').innerText='Remove Background';
+    document.getElementById('status').innerText='Done! Unlimited - Background Removed.';
     changeBg();
-  }catch(err){
-    document.getElementById('status').innerText='Please check internet and try again.';
-    document.getElementById('removeBtn').innerText='Remove Background';
-  }
+  }catch(err){document.getElementById('status').innerText='Net slow hai, 1 min wait karke dobara Try dabao, ho jayega. Ye Unlimited hai.';}
 };
 window.changeBg=()=>{
   let r=document.getElementById('result'); let val=document.getElementById('bgSelect').value;
@@ -86,191 +81,7 @@ window.changeBg=()=>{
 };
 window.downloadImg=()=>{
   if(!resultBlob) return;
-  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover.png'; a.click();
-};
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD BG Remover - Remove Background in HD Free</title>
-<style>
-body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:20px;margin:0}
-.box{max-width:650px;margin:auto;background:#1e293b;padding:25px;border-radius:20px}
-.upload{border:2px dashed #38bdf8;padding:30px;border-radius:15px;cursor:pointer;background:#0f172a}
-.upload img{max-width:100%;border-radius:10px;margin-top:15px;display:none}
-button{background:#4f46e5;color:white;border:none;padding:14px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:10px;width:90%}
-a{color:white;text-decoration:none}
-footer{margin-top:20px;font-size:14px}
-footer a{margin:0 8px}
-#status{margin:10px;color:#facc15}
-select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
-</style>
-</head>
-<body>
-<div class="box">
-<h1>✨ HD BG Remover</h1>
-<p>Remove Background From Any Photo in HD Quality - 100% Free</p>
-<div class="upload" onclick="document.getElementById('file').click()">
-<p>📸 Drop Photo Here - Click to Upload</p>
-<input type="file" id="file" accept="image/*" hidden>
-<img id="preview">
-<img id="result" style="display:none">
-<p id="status"></p>
-</div>
-<label>Choose Background:</label><br>
-<select id="bgSelect" onchange="changeBg()">
-<option value="transparent">Transparent (No Background)</option>
-<option value="white">White Background</option>
-<option value="blue">Blue Background</option>
-<option value="red">Red Background</option>
-<option value="green">Green Background</option>
-</select>
-<button id="removeBtn" onclick="removeBg()">Remove Background</button>
-<button id="downloadBtn" onclick="downloadImg()" style="display:none;background:#16a34a">Download HD Photo</button>
-</div>
-<footer>
-<a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
-<p>© 2026 HD BG Remover - Free Tool</p>
-</footer>
-<script type="module">
-import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
-let selectedFile=null; let resultBlob=null;
-document.getElementById('file').addEventListener('change', e=>{
-  selectedFile=e.target.files[0];
-  if(!selectedFile) return;
-  let url=URL.createObjectURL(selectedFile);
-  let p=document.getElementById('preview');
-  p.src=url; p.style.display='block';
-  document.getElementById('result').style.display='none';
-  document.getElementById('downloadBtn').style.display='none';
-  document.getElementById('status').innerText='';
-});
-window.removeBg=async()=>{
-  if(!selectedFile){alert('Please select a photo first!');return;}
-  document.getElementById('status').innerText='Processing... Please wait 20 sec, do not refresh...';
-  document.getElementById('removeBtn').innerText='Processing...';
-  try{
-    // SIMPLE - No extra publicPath, isliye error nahi aayega
-    let blob=await removeBackground(selectedFile);
-    resultBlob=blob;
-    let url=URL.createObjectURL(blob);
-    let r=document.getElementById('result');
-    r.src=url; r.style.display='block';
-    document.getElementById('downloadBtn').style.display='block';
-    document.getElementById('status').innerText='Done! Background Removed Successfully.';
-    document.getElementById('removeBtn').innerText='Remove Background';
-    changeBg();
-  }catch(err){
-    document.getElementById('status').innerText='Please check internet and try again.';
-    document.getElementById('removeBtn').innerText='Remove Background';
-  }
-};
-window.changeBg=()=>{
-  let r=document.getElementById('result'); let val=document.getElementById('bgSelect').value;
-  if(val==='white') r.style.background='white';
-  else if(val==='blue') r.style.background='#2563eb';
-  else if(val==='red') r.style.background='#dc2626';
-  else if(val==='green') r.style.background='#16a34a';
-  else r.style.background='transparent';
-};
-window.downloadImg=()=>{
-  if(!resultBlob) return;
-  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover.png'; a.click();
-};
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HD BG Remover - Remove Background in HD Free</title>
-<style>
-body{font-family:Arial;background:#0f172a;color:white;text-align:center;padding:20px;margin:0}
-.box{max-width:650px;margin:auto;background:#1e293b;padding:25px;border-radius:20px}
-.upload{border:2px dashed #38bdf8;padding:30px;border-radius:15px;cursor:pointer;background:#0f172a}
-.upload img{max-width:100%;border-radius:10px;margin-top:15px;display:none}
-button{background:#4f46e5;color:white;border:none;padding:14px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:10px;width:90%}
-a{color:white;text-decoration:none}
-footer{margin-top:20px;font-size:14px}
-footer a{margin:0 8px}
-#status{margin:10px;color:#facc15}
-select{width:90%;padding:12px;border-radius:10px;margin:10px;font-size:15px}
-</style>
-</head>
-<body>
-<div class="box">
-<h1>✨ HD BG Remover</h1>
-<p>Remove Background From Any Photo in HD Quality - 100% Free</p>
-<div class="upload" onclick="document.getElementById('file').click()">
-<p>📸 Drop Photo Here - Click to Upload</p>
-<input type="file" id="file" accept="image/*" hidden>
-<img id="preview">
-<img id="result" style="display:none">
-<p id="status"></p>
-</div>
-<label>Choose Background:</label><br>
-<select id="bgSelect" onchange="changeBg()">
-<option value="transparent">Transparent (No Background)</option>
-<option value="white">White Background</option>
-<option value="blue">Blue Background</option>
-<option value="red">Red Background</option>
-<option value="green">Green Background</option>
-</select>
-<button id="removeBtn" onclick="removeBg()">Remove Background</button>
-<button id="downloadBtn" onclick="downloadImg()" style="display:none;background:#16a34a">Download HD Photo</button>
-</div>
-<footer>
-<a href="index.html">Home</a> | <a href="about.html">About Us</a> | <a href="contact.html">Contact Us</a> | <a href="privacy.html">Privacy Policy</a>
-<p>© 2026 HD BG Remover - Free Tool</p>
-</footer>
-<script type="module">
-import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
-let selectedFile=null; let resultBlob=null;
-document.getElementById('file').addEventListener('change', e=>{
-  selectedFile=e.target.files[0];
-  if(!selectedFile) return;
-  let url=URL.createObjectURL(selectedFile);
-  let p=document.getElementById('preview');
-  p.src=url; p.style.display='block';
-  document.getElementById('result').style.display='none';
-  document.getElementById('downloadBtn').style.display='none';
-  document.getElementById('status').innerText='';
-});
-window.removeBg=async()=>{
-  if(!selectedFile){alert('Please select a photo first!');return;}
-  document.getElementById('status').innerText='Processing... Please wait 20 sec, do not refresh...';
-  document.getElementById('removeBtn').innerText='Processing...';
-  try{
-    // SIMPLE - No extra publicPath, isliye error nahi aayega
-    let blob=await removeBackground(selectedFile);
-    resultBlob=blob;
-    let url=URL.createObjectURL(blob);
-    let r=document.getElementById('result');
-    r.src=url; r.style.display='block';
-    document.getElementById('downloadBtn').style.display='block';
-    document.getElementById('status').innerText='Done! Background Removed Successfully.';
-    document.getElementById('removeBtn').innerText='Remove Background';
-    changeBg();
-  }catch(err){
-    document.getElementById('status').innerText='Please check internet and try again.';
-    document.getElementById('removeBtn').innerText='Remove Background';
-  }
-};
-window.changeBg=()=>{
-  let r=document.getElementById('result'); let val=document.getElementById('bgSelect').value;
-  if(val==='white') r.style.background='white';
-  else if(val==='blue') r.style.background='#2563eb';
-  else if(val==='red') r.style.background='#dc2626';
-  else if(val==='green') r.style.background='#16a34a';
-  else r.style.background='transparent';
-};
-window.downloadImg=()=>{
-  if(!resultBlob) return;
-  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover.png'; a.click();
+  let a=document.createElement('a'); a.href=URL.createObjectURL(resultBlob); a.download='hd-bg-remover-unlimited.png'; a.click();
 };
 </script>
 </body>
